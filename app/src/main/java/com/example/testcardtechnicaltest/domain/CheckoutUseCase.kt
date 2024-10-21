@@ -14,7 +14,7 @@ class CheckoutUseCase(private val basketRepository: BasketRepository, private va
 
         discounts.forEach {
             tempBasket = when(it){
-                is ComboDeal -> discountHandler.applyComboDeal(basket = tempBasket, comboDeal = it)
+                is ComboDeal -> discountHandler.applyComboDeal(basket = tempBasket, discount = it)
                 is Buy2Get1Free -> discountHandler.applyDiscountBuy2GetOneFree(basket = tempBasket)
                 is DiscountOnBasket -> discountHandler.applyDiscountOnBasket(basket = tempBasket, it)
                 is DiscountOnProduct -> discountHandler.applyDiscountOnProduct(basket = tempBasket, discount = it)

@@ -3,6 +3,7 @@ package com.example.testcardtechnicaltest.data
 import com.example.testcardtechnicaltest.UnitTestParentClass
 import com.example.testcardtechnicaltest.model.Basket
 import com.example.testcardtechnicaltest.model.ComboDeal
+import com.example.testcardtechnicaltest.model.DiscountOnBasket
 import com.example.testcardtechnicaltest.model.DiscountOnProduct
 import com.example.testcardtechnicaltest.model.Shoe
 import com.example.testcardtechnicaltest.model.Short
@@ -30,7 +31,7 @@ class DiscountHandlerTest : UnitTestParentClass() {
     fun `should apply discount ot the basket`() {
         val discount = 0.2
         val expectedDiscountedBasketAmount = basket.amount - (basket.amount * discount).toInt()
-        val expectedBasket = discountHandler.applyDiscountOnBasket(basket = basket, discount = discount)
+        val expectedBasket = discountHandler.applyDiscountOnBasket(basket = basket, discount = DiscountOnBasket(percentage = discount))
         assertEquals(expectedDiscountedBasketAmount, expectedBasket.amount)
     }
 

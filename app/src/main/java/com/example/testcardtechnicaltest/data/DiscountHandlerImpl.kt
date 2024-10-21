@@ -29,15 +29,7 @@ class DiscountHandlerImpl : DiscountHandler {
             if (it.quantity != 0 && discount.productType == it::class) {
 
                 totalDiscount = ((it.price * discount.percentage) * it.quantity).toInt()
-
-                val updatedProduct = when (it) {
-                    is Shoe -> it.copy(quantity = it.quantity - 1)
-                    is Short -> it.copy(quantity = it.quantity - 1)
-                    is Sock -> it.copy(quantity = it.quantity - 1)
-                    is TShirt -> it.copy(quantity = it.quantity - 1)
-                    is Trouser -> it.copy(quantity = it.quantity - 1)
-                }
-                updatedProduct
+                it.copyWithUpdatedQuantity(it.quantity - 1)
             } else {
                 it
             }
@@ -53,14 +45,10 @@ class DiscountHandlerImpl : DiscountHandler {
 
         val updatedProducts = basket.products.map {
             if (discount.categories.contains(it::class)) {
+
                 productsFullPrice += it.price
-                when (it) {
-                    is Shoe -> it.copy(quantity = it.quantity - 1)
-                    is Short -> it.copy(quantity = it.quantity - 1)
-                    is Sock -> it.copy(quantity = it.quantity - 1)
-                    is TShirt -> it.copy(quantity = it.quantity - 1)
-                    is Trouser -> it.copy(quantity = it.quantity - 1)
-                }
+
+                it.copyWithUpdatedQuantity(updatedQuantity = it.quantity - 1)
             } else {
                 it
             }
@@ -73,42 +61,15 @@ class DiscountHandlerImpl : DiscountHandler {
     override fun applyDiscountBuy2GetOneFree(basket: Basket): Basket {
         var totalDiscount = 0
         val updatedProduct = basket.products.map { product ->
+
             totalDiscount += getAmountSavedFromDiscount(
                 quantity = product.quantity,
                 price = product.price
             )
 
-            when (product) {
-                is Shoe -> product.copy(
-                    quantity = getTheNumberOfProductAvailableForNewDiscount(
-                        product.quantity
-                    )
-                )
-
-                is Short -> product.copy(
-                    quantity = getTheNumberOfProductAvailableForNewDiscount(
-                        product.quantity
-                    )
-                )
-
-                is Sock -> product.copy(
-                    quantity = getTheNumberOfProductAvailableForNewDiscount(
-                        product.quantity
-                    )
-                )
-
-                is TShirt -> product.copy(
-                    quantity = getTheNumberOfProductAvailableForNewDiscount(
-                        product.quantity
-                    )
-                )
-
-                is Trouser -> product.copy(
-                    quantity = getTheNumberOfProductAvailableForNewDiscount(
-                        product.quantity
-                    )
-                )
-            }
+            product.copyWithUpdatedQuantity(getTheNumberOfProductAvailableForNewDiscount(
+                product.quantity
+            ))
         }
         return basket.copy(products = updatedProduct, amount = basket.amount - totalDiscount)
     }
